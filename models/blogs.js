@@ -5,7 +5,12 @@ const blogs = mongoose.Schema(
             type:String,
             required:[true,"enter heading"]
         },
-        text: {
+        text1: {
+            type: String,
+            required: [true, "Enter Valid Name"],
+            trim: true,
+        },
+        text2: {
             type: String,
             required: [true, "Enter Valid Name"],
             trim: true,
@@ -15,9 +20,18 @@ const blogs = mongoose.Schema(
             required: [true, "Enter Valid userName"],
             trim: true,
         },
-        reference: {
+        referenceImage: {
             type: String,
             trim: true,
+        },
+        referenceText: {
+            type: String,
+            trim: true,
+        },
+        language:{
+            type: String,
+            required:true,
+            trim:true
         }
     },
     { timeStamps: true }
