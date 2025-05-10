@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const users = mongoose.Schema(
   {
     name: {
@@ -29,10 +30,16 @@ const users = mongoose.Schema(
     },
     phone: {
       type: String,
-      required: [true, "Enter Valid Email"],
+      required: [true, "Enter Valid Phone Number"],
       unique: true,
+    },
+    admin: {
+      type: Boolean,
+      required: [true],
+      default: false,
     }
   },
-  {timeStamps: true}
+  { timestamps: true }
 );
+
 export default mongoose.model("users", users);

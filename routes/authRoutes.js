@@ -1,6 +1,8 @@
 import express from 'express';
-import { signinController, signupController } from '../controller/authController.js';
+import { signinController, signupController, verifyToken } from '../controller/authController.js';
+
 export const authRoutes = express.Router();
 
-authRoutes.post("/signup",signupController)
-authRoutes.post("/signin",signinController)
+authRoutes.post("/signup", signupController)
+authRoutes.post("/signin", signinController)
+authRoutes.get('/JWTVerify/:token',verifyToken);
