@@ -5,7 +5,7 @@ export async function getAllPosts(req, res) {
     try {
         const getAll = await blogs.find();
         if (getAll.length == 0) {
-            return errorHandler(res, 400, "No Post avaliable");
+            return errorHandler(res, 200, "No Post avaliable");
         }
         else if (getAll) {
             return successHandler(res, 200, "data found", getAll, getAll.length)
@@ -28,7 +28,23 @@ export async function getsinglePost(req, res) {
     });
 
     if (blog.length === 0) {
-        return errorHandler(res, 404, "No matching blogs found");
+        return errorHandler(res, 200, "No matching blogs found");
+    }
+
+    return successHandler(res, 200, "Blogs found", blog, blog.length);
+}
+
+export async function getsinglePostById(req, res) {
+    const id = req.params.id;
+
+    if (!id) {
+        return errorHandler(res, 400, "Invalid input");
+    }
+
+    const blog = await blogs.findOne({ _id: id });
+
+    if (!blog) {
+        return errorHandler(res, 200, "No matching blogs found");
     }
 
     return successHandler(res, 200, "Blogs found", blog, blog.length);
@@ -36,15 +52,19 @@ export async function getsinglePost(req, res) {
 
 export async function addPost(req, res) {
     try {
-        const { heading, text, postURL, reference } = req.body;
-        if (!heading || !text || !postURL) {
+        const { heading, text1, text2, referenceImage1, referenceImage2, referenceText1, referenceText2, language } = req.body;
+        if (!heading || !text1 || !text2 || !language) {
             return errorHandler(res, 400, "Missing Feilds");
         }
         const blog = new blogs({
             heading: heading,
-            text: text,
-            postURL: postURL,
-            reference: reference
+            text1: text1,
+            text2: text2,
+            referenceImage1: referenceImage1 || "",
+            referenceImage2: referenceImage2 || "",
+            referenceText1: referenceText1 || "",
+            referenceText2: referenceText2 || "",
+            language: language
         })
         const isSaved = await blog.save()
         if (!isSaved) {
@@ -62,8 +82,8 @@ export async function updatePost(req, res) {
     if (!id) {
         return errorHandler(res, 400, "Missing Feilds");
     }
-    const { heading, text, postURL, reference } = req.body;
-    if (!heading || !text || !postURL) {
+    const { heading, text1, text2, referenceImage1, referenceImage2, referenceText1, referenceText2, language } = req.body;
+    if (!heading || !text1 || !text2 || !language) {
         return errorHandler(res, 400, "Missing Feilds");
     }
     const blog = await blogs.findOneAndUpdate(
@@ -71,9 +91,13 @@ export async function updatePost(req, res) {
         {
             $set: {
                 heading: heading,
-                text: text,
-                postURL: postURL,
-                reference: reference
+                text1: text1,
+                text2: text2,
+                referenceImage1: referenceImage1 || "",
+                referenceImage2: referenceImage2 || "",
+                referenceText1: referenceText1 || "",
+                referenceText2: referenceText2 || "",
+                language: language
             },
         },
         { new: true }
@@ -82,6 +106,25 @@ export async function updatePost(req, res) {
         return errorHandler(res, 500, "Invalid post Id")
     }
     return successHandler(res, 200, "Updated successfully", blog);
+}
+
+export async function getPostByLanguage(req, res) {
+    const language = req.params.language;
+    if (!language) {
+        return errorHandler(res, 400, "Missing Feilds");
+    }
+    try {
+        const blog = await blogs.find({ language: language });
+
+        if (blog.lenght == 0) {
+            return errorHandler(res, 200, "No matching blogs found");
+        }
+
+        return successHandler(res, 200, "Blogs found", blog, blog.length);
+    }
+    catch(e){
+        return errorHandler(res, 500, e);
+    }
 }
 
 export async function deletePost(req, res) {

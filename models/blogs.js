@@ -15,16 +15,19 @@ const blogs = mongoose.Schema(
             required: [true, "Enter Valid Name"],
             trim: true,
         },
-        postURL: {
-            type: String,
-            required: [true, "Enter Valid userName"],
-            trim: true,
-        },
-        referenceImage: {
+        referenceImage1: {
             type: String,
             trim: true,
         },
-        referenceText: {
+        referenceText1: {
+            type: String,
+            trim: true,
+        },
+        referenceImage2: {
+            type: String,
+            trim: true,
+        },
+        referenceText2: {
             type: String,
             trim: true,
         },

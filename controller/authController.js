@@ -49,7 +49,6 @@ export async function signupController(req, res) {
   }
 }
 
-
 //Sign In
 export async function signinController(req, res) {
   try {
@@ -80,7 +79,6 @@ export async function signinController(req, res) {
     console.log(error);
   }
 }
-
 
 // verifyTokenJWT
 export const verifyToken = (req, res) => {
