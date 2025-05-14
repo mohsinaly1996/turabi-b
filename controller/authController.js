@@ -50,20 +50,20 @@ export async function signupController(req, res) {
 }
 
 //Sign In
-export async function signinController(req, res) {
+export async function signinController(req, res) {  
   try {
     const tokenJWT = req.body.params;
     const { email, password } = req.body;
     if (!email || !password) {
-      return errorHandler(res, 500, "All feilds are mandatory");
+      return errorHandler(res, 400, "All feilds are mandatory");
     }
     const userData = await users.findOne({ email: email });
     if (!userData) {
-      return errorHandler(res, 500, "InValid UserName or Password")
+      return errorHandler(res, 400, "InValid UserName or Password")
     }
     const isValidPassword = await compare(password, userData.password)
     if (!isValidPassword) {
-      return errorHandler(res, 500, "InValid UserName or Password")
+      return errorHandler(res, 400, "InValid UserName or Password")
     }
     const token = JWT.sign(
       {
